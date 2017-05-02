@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {createContainer} from 'meteor/react-meteor-data'
-import Items from '/imports/api/items'
 import Item from './Item'
+import Items from '/imports/api/items'
 import {LoginButtons} from 'meteor/okgrow:accounts-ui-react';
 
 class App extends Component {
@@ -10,19 +10,13 @@ class App extends Component {
     event.preventDefault()
     const itemOne = this.refs.itemOne.value.trim()
     const itemTwo = this.refs.itemTwo.value.trim()
-    if (itemOne && itemOne) {
-      Items.insert({
-        itemOne: {
-          text: itemOne,
-          value: 0
-        },
-        itemTwo: {
-          text: itemTwo,
-          value: 0
+    if (itemOne && itemTwo) {
+      Meteor.call('insertNewItem', itemOne, itemTwo, (err, res)=>{
+        if(!err){
+          this.refs.itemOne.value = ''
+          this.refs.itemTwo.value = ''
         }
       })
-      this.refs.itemOne.value = ''
-      this.refs.itemTwo.value = ''
     }
   }
 
