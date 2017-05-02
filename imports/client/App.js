@@ -11,8 +11,8 @@ class App extends Component {
     const itemOne = this.refs.itemOne.value.trim()
     const itemTwo = this.refs.itemTwo.value.trim()
     if (itemOne && itemTwo) {
-      Meteor.call('insertNewItem', itemOne, itemTwo, (err, res)=>{
-        if(!err){
+      Meteor.call('insertNewItem', itemOne, itemTwo, (err, res) => {
+        if (!err) {
           this.refs.itemOne.value = ''
           this.refs.itemTwo.value = ''
         }
@@ -20,12 +20,22 @@ class App extends Component {
     }
   }
 
+  showAll() {
+    if(this.props.showAll){
+      Session.set('showAll', false)
+    } else {
+      Session.set('showAll', true)
+    }
+  }
+
   render() {
-    return (
+    if (!this.props.ready) return <div>Loading...</div>
+    else return (
       <div>
         <header>
           <h1>Level Up Voting</h1>
           <LoginButtons/>
+          <button onClick={this.showAll.bind(this)}>Show {this.props.showAll ? 'One' : 'All'}</button>
         </header>
         <main>
           <form className="new-items" onSubmit={this.addItems.bind(this)}>
@@ -45,7 +55,14 @@ class App extends Component {
 }
 
 export default createContainer(() => {
+  let itemsSub = Meteor.subscribe('allItems')
+  let showAll = Session.get('showAll')
   return {
-    items: Items.find({}).fetch()
+    ready: itemsSub.ready(),
+    showAll,
+    items: Items.find({}, {
+      limit: showAll ? 99999999999999999999999999999999999999999999999999999999999999999999999999 : 1,
+      sort: { lastUpdated: 1 }
+    }).fetch()
   }
 }, App);
