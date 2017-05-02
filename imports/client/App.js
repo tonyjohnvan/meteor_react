@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
+import {createContainer} from 'meteor/react-meteor-data'
+import Items from '/imports/api/items'
 
-export default class App extends Component {
+class App extends Component {
   constructor() {
     super();
     this.state = {
@@ -17,11 +19,17 @@ export default class App extends Component {
   render() {
     return (
       <header onClick={this.headingClick.bind(this)}>
-        <Heading count={this.state.count} />
+        <Heading count={this.state.count}/>
       </header>
     )
   }
 }
+
+export default createContainer(() => {
+  return {
+    items: Items.find({}).fetch()
+  }
+}, App);
 
 class Heading extends Component {
   render() {
