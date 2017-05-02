@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {createContainer} from 'meteor/react-meteor-data'
 import Items from '/imports/api/items'
 import Item from './Item'
+import {LoginButtons} from 'meteor/okgrow:accounts-ui-react';
 
 class App extends Component {
 
@@ -30,6 +31,7 @@ class App extends Component {
       <div>
         <header>
           <h1>Level Up Voting</h1>
+          <LoginButtons/>
         </header>
         <main>
           <form className="new-items" onSubmit={this.addItems.bind(this)}>
