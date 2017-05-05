@@ -3,17 +3,16 @@ import {
   Router,
   Route,
   IndexRoute,
-  hashHistory
+  browserHistory
 } from 'react-router'
 
-import {Meteor} from 'meteor/meteor'
 import {render} from 'react-dom'
 
 import App from '/imports/client/App'
 
 Meteor.startup(() => {
   render(
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
       <Route path="/" component={App}/>
     </Router>,
     document.getElementById('render-target')
