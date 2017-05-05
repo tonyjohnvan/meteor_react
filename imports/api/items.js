@@ -3,21 +3,15 @@ import SimpleSchema from 'simpl-schema'
 
 const Items = new Mongo.Collection('items');
 
+const ItemSchema = new SimpleSchema({
+  text: String,
+  value: SimpleSchema.Integer,
+})
+
 const ItemsSchema = new SimpleSchema({
-  itemOne:{
-    type: Object,
-  },
-  'itemOne.text': String,
-  'itemOne.value': SimpleSchema.Integer,
-  itemTwo:{
-    type: Object
-  },
-  'itemTwo.text': String,
-  'itemTwo.value': SimpleSchema.Integer,
-  lastUpdated: {
-    type: Date,
-    optional: true
-  }
+  itemOne: ItemSchema,
+  itemTwo: ItemSchema,
+  lastUpdated: { type: Date, optional: true }
 })
 
 Items.attachSchema(ItemsSchema)
@@ -29,8 +23,6 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     insertNewItem(itemOne, itemTwo){
-      check(itemOne, String);
-      check(itemTwo, String);
       Items.insert({
         itemOne: {
           text: itemOne,
