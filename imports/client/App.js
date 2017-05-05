@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import {createContainer} from 'meteor/react-meteor-data'
 import Item from './Item'
 import Items from '/imports/api/items'
+import { autobind } from 'core-decorators'
 
+@autobind
 class App extends Component {
 
   addItems(event) {
@@ -31,8 +33,8 @@ class App extends Component {
     if (!this.props.ready) return <div>Loading...</div>
     else return (
       <main>
-        <button onClick={this.showAll.bind(this)}>Show {this.props.showAll ? 'One' : 'All'}</button>
-        <form className="new-items" onSubmit={this.addItems.bind(this)}>
+        <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
+        <form className="new-items" onSubmit={this.addItems}>
           <input type="text" ref='itemOne'/>
           <input type="text" ref='itemTwo'/>
           <button type="submit">Add Items</button>
