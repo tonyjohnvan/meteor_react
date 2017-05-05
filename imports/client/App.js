@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   showAll() {
-    if(this.props.showAll){
+    if (this.props.showAll) {
       Session.set('showAll', false)
     } else {
       Session.set('showAll', true)
@@ -30,21 +30,19 @@ class App extends Component {
   render() {
     if (!this.props.ready) return <div>Loading...</div>
     else return (
-      <div>
+      <main>
         <button onClick={this.showAll.bind(this)}>Show {this.props.showAll ? 'One' : 'All'}</button>
-        <main>
-          <form className="new-items" onSubmit={this.addItems.bind(this)}>
-            <input type="text" ref='itemOne'/>
-            <input type="text" ref='itemTwo'/>
-            <button type="submit">Add Items</button>
-          </form>
-          {this.props.items.map((item) => {
-            return (
-              <Item item={item} key={item._id}/>
-            )
-          })}
-        </main>
-      </div>
+        <form className="new-items" onSubmit={this.addItems.bind(this)}>
+          <input type="text" ref='itemOne'/>
+          <input type="text" ref='itemTwo'/>
+          <button type="submit">Add Items</button>
+        </form>
+        {this.props.items.map((item) => {
+          return (
+            <Item item={item} key={item._id}/>
+          )
+        })}
+      </main>
     )
   }
 }
@@ -56,7 +54,7 @@ export default createContainer(() => {
     ready: itemsSub.ready(),
     showAll,
     items: Items.find({}, {
-      limit: showAll ? 99999999999999999999999999999999999999999999999999999999999999999999999999 : 1,
+      limit: showAll ? 100 : 1,
       sort: { lastUpdated: 1 }
     }).fetch()
   }

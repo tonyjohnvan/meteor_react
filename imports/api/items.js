@@ -1,6 +1,26 @@
 import {Mongo} from 'meteor/mongo'
+import SimpleSchema from 'simpl-schema'
 
 const Items = new Mongo.Collection('items');
+
+const ItemsSchema = new SimpleSchema({
+  itemOne:{
+    type: Object,
+  },
+  'itemOne.text': String,
+  'itemOne.value': SimpleSchema.Integer,
+  itemTwo:{
+    type: Object
+  },
+  'itemTwo.text': String,
+  'itemTwo.value': SimpleSchema.Integer,
+  lastUpdated: {
+    type: Date,
+    optional: true
+  }
+})
+
+Items.attachSchema(ItemsSchema)
 
 if (Meteor.isServer) {
   Meteor.publish('allItems', function () {
