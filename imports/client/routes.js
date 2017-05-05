@@ -9,11 +9,14 @@ import {
 import {render} from 'react-dom'
 
 import App from '/imports/client/App'
+import MainLayout from '/imports/client/layouts/MainLayout'
 
 Meteor.startup(() => {
   render(
     <Router history={browserHistory}>
-      <Route path="/" component={App}/>
+      <Route path="/" component={MainLayout}>
+        <IndexRoute component={App} />
+      </Route>
     </Router>,
     document.getElementById('render-target')
   )

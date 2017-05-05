@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {createContainer} from 'meteor/react-meteor-data'
 import Item from './Item'
 import Items from '/imports/api/items'
-import {LoginButtons} from 'meteor/okgrow:accounts-ui-react';
 
 class App extends Component {
 
@@ -32,11 +31,7 @@ class App extends Component {
     if (!this.props.ready) return <div>Loading...</div>
     else return (
       <div>
-        <header>
-          <h1>Level Up Voting</h1>
-          <LoginButtons/>
-          <button onClick={this.showAll.bind(this)}>Show {this.props.showAll ? 'One' : 'All'}</button>
-        </header>
+        <button onClick={this.showAll.bind(this)}>Show {this.props.showAll ? 'One' : 'All'}</button>
         <main>
           <form className="new-items" onSubmit={this.addItems.bind(this)}>
             <input type="text" ref='itemOne'/>
