@@ -36,6 +36,7 @@ if (Meteor.isServer) {
           value: 0
         }
       })
+      Roles.addUsersToRoles(Meteor.userId(), 'submitter')
     },
     voteOnItem(item, position) {
       let lastUpdated = new Date()
@@ -59,6 +60,7 @@ if (Meteor.isServer) {
             }
           })
         }
+        Roles.addUsersToRoles(Meteor.userId(), 'voter')
       } else {
         console.log('You need to login!')
       }
