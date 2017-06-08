@@ -18,7 +18,10 @@ Items.attachSchema(ItemsSchema)
 
 if (Meteor.isServer) {
   Meteor.publish('allItems', function () {
-    return Items.find({});
+    return Items.find({},{
+      limit: 50,
+      sort: { lastUpdated: 1}
+    });
   })
 
   Meteor.methods({
