@@ -4,6 +4,8 @@ import Item from './Item'
 import Items from '/imports/api/items'
 import { autobind } from 'core-decorators'
 
+import IsRole from '/imports/client/utilities/IsRole'
+
 @autobind
 class App extends Component {
 
@@ -34,13 +36,11 @@ class App extends Component {
       return <div>Loading...</div>
     }
 
-    const showAll = Roles.userIsInRole(Meteor.userId(), 'admin') ? (
-      <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
-    ) : null
-
     return (
       <main>
-        {showAll}
+        <IsRole role={['admin', 'voter']}>
+          <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
+        </IsRole>
         <form className="new-items" onSubmit={this.addItems}>
           <input type="text" ref='itemOne'/>
           <input type="text" ref='itemTwo'/>
