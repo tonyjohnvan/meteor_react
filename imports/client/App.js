@@ -5,6 +5,8 @@ import Items from '/imports/api/items'
 import { autobind } from 'core-decorators'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+import IsRole from '/imports/client/utilities/IsRole'
+
 @autobind
 class App extends Component {
 
@@ -31,10 +33,15 @@ class App extends Component {
   }
 
   render() {
-    if (!this.props.ready) return <div>Loading...</div>
-    else return (
+    if (!this.props.ready){
+      return <div>Loading...</div>
+    }
+
+    return (
       <main>
-        <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
+        <IsRole role={['admin', 'voter']}>
+          <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
+        </IsRole>
         <form className="new-items" onSubmit={this.addItems}>
           <input type="text" ref='itemOne'/>
           <input type="text" ref='itemTwo'/>
@@ -56,15 +63,22 @@ class App extends Component {
   }
 }
 
-export default createContainer(() => {
+export default createContainer(({params}) => {
   let itemsSub = Meteor.subscribe('allItems')
+  let userSub = Meteor.subscribe('currentUser')
   let showAll = Session.get('showAll')
-  return {
-    ready: itemsSub.ready(),
-    showAll,
-    items: Items.find({}, {
+  let itemsArray
+  if (params.id) {
+    itemsArray = Items.find({_id: params.id}, {}).fetch()
+  } else {
+    itemsArray = Items.find({}, {
       limit: showAll ? 100 : 1,
-      sort: { lastUpdated: 1 }
+      sort: {lastUpdated: 1}
     }).fetch()
+  }
+  return {
+    showAll,
+    ready: itemsSub.ready() && userSub.ready(),
+    items: itemsArray
   }
 }, App);
