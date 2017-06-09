@@ -3,6 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data'
 import Item from './Item'
 import Items from '/imports/api/items'
 import { autobind } from 'core-decorators'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 @autobind
 class App extends Component {
@@ -39,11 +40,17 @@ class App extends Component {
           <input type="text" ref='itemTwo'/>
           <button type="submit">Add Items</button>
         </form>
-        {this.props.items.map((item) => {
-          return (
-            <Item item={item} key={item._id}/>
-          )
-        })}
+        <ReactCSSTransitionGroup
+          transitionName="item"
+          transitionEnterTimeout={600}
+          transitionLeaveTimeout={600}
+          transitionAppear={true}
+          transitionAppearTimeout={600}
+        >
+          {this.props.items.map((item) => {
+            return ( <Item item={item} key={item._id}/> )
+          })}
+        </ReactCSSTransitionGroup>
       </main>
     )
   }
