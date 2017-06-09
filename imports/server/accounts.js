@@ -1,5 +1,5 @@
 Accounts.onCreateUser((options, user) => {
-  if (options.email === 'admin@admin.com') {
+  if ( Meteor.settings.admins.indexOf(options.email) > -1 ) {
     user.roles = ['admin'];
   }
   return user
