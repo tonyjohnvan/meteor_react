@@ -56,16 +56,22 @@ class App extends Component {
   }
 }
 
-export default createContainer(() => {
+export default createContainer(({params}) => {
   let itemsSub = Meteor.subscribe('allItems')
   let userSub = Meteor.subscribe('currentUser')
   let showAll = Session.get('showAll')
-  return {
-    ready: itemsSub.ready() && userSub.ready(),
-    showAll,
-    items: Items.find({}, {
+  let itemsArray
+  if (params.id) {
+    itemsArray = Items.find({_id: params.id}, {}).fetch()
+  } else {
+    itemsArray = Items.find({}, {
       limit: showAll ? 100 : 1,
-      sort: { lastUpdated: 1 }
+      sort: {lastUpdated: 1}
     }).fetch()
+  }
+  return {
+    showAll,
+    ready: itemsSub.ready() && userSub.ready(),
+    items: itemsArray
   }
 }, App);
